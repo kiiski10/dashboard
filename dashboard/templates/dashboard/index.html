@@ -1,0 +1,9 @@
+{% if context.cars %}
+    <ul>
+    {% for car in context.cars %}
+        <li><a href="/polls/{{ car.name }}/">{{ car.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No cars are available.</p>
+{% endif %}
