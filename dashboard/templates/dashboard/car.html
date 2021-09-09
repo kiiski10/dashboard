@@ -1,0 +1,8 @@
+{% if car %}
+    Car id: {{ car.id }} <br />
+    Name: {{ car.name }} <br />
+    location: {{ car.location }} <br />
+    image: {{ car.image }} <br />
+{% else %}
+    <p>No car found with this ID</p>
+{% endif %}
