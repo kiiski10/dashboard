@@ -1,5 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.conf import settings
 from .models import Profile
+import base64
 
 def index(request):
     profiles = Profile.objects.all()
@@ -11,11 +14,10 @@ def profile(request, id):
     context = { "profile": profile }
     return render(request, "dashboard/profile.html", context)
 
-def image(request, id):
-    context = {
-        "id": id
-    }
-    return render(request, "dashboard/image.html", context)
+def image(request, name):
+    file = "{}/img/{}".format(settings.MEDIA_ROOT, name)
+    image = open(file, 'rb').read()
+    return HttpResponse(image)
 
 def gpx(request, id):
     print("REQ -->", request)

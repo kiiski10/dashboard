@@ -1,14 +1,8 @@
 {% if profile %}
     Profile id: {{ profile.id }} <br />
     Name: {{ profile.name }} <br />
-    Location:
-    <a href="/media/i/{{ profile.id }}">
-        {{ profile.location }}
-    </a> <br />
-    Image:
-    <a href="/media/i/{{ profile.id }}">
-        <img src="/media/{{ profile.id }}"/> <br />
-    </a>
+    Image: /media/{{ profile.image }} <br />
+    <img src="/media/{{ profile.image }}" /> <br />
 {% else %}
     <p>No profile found with this ID</p>
 {% endif %}
