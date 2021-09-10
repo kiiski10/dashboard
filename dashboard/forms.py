@@ -1,4 +1,11 @@
 from django import forms
+from .models import Profile
 
-class ProfileForm(forms.Form):
-    profile_name = forms.CharField(label='Profile name', max_length=100)
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = [
+            "name",
+            "enabled_widgets",
+            "image"
+        ]
