@@ -1,8 +1,31 @@
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
 from .models import Profile
-import base64
+from .forms import ProfileForm
+
+def editProfile(request, id):
+    print("ID::::", id)
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = ProfileForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect("/ep/" + id)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ProfileForm()
+
+    return render(request, 'dashboard/editProfile.html', {
+            "id": id,
+            "form": form
+        }
+    )
 
 def index(request):
     profiles = Profile.objects.all()
