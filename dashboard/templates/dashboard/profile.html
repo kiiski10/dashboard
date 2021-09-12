@@ -2,6 +2,8 @@
     Profile id: {{ profile.id }} <a href="/ep/{{ profile.id }}">(edit)</a><br />
     Name: {{ profile.name }} <br />
     Image: /media/{{ profile.image }} <br />
+    <a href="/camera/0/" />Camera</a>
+    <br />
     <img src="/media/{{ profile.image }}" /> <br />
 {% else %}
     <p>No profile found with this ID</p>

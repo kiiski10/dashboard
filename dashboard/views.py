@@ -4,6 +4,9 @@ from django.shortcuts import render
 from django.conf import settings
 from .models import Profile
 from .forms import ProfileForm
+from django.views.decorators import gzip
+from django.http import StreamingHttpResponse # for LiveView
+import cv2
 
 def editProfile(request, id):
     if request.method == 'POST':
@@ -49,3 +52,15 @@ def gpx(request, id):
         "id": id
     }
     return render(request, "dashboard/gpx.html", context)
+
+
+from .utilities import camera
+camera = camera.Camera(0)
+
+@gzip.gzip_page
+def cameraView(request, id):
+    try:
+        return StreamingHttpResponse(camera.frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
+    except Exception as e:
+        print("ERROR:", e)
+    return HttpResponse(request, 'Ei voittoa')
