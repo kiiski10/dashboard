@@ -1,5 +1,9 @@
 <form action="/ep/{{ id }}/" method="post">
     {% csrf_token %}
-    {{ form }}
+    <ul>
+      <li> Name {{ form.name }} </li>
+      <li> Widgets {{ form.enabled_widgets }} </li>
+      <li> Image {{ form.image }} </li>
+    </ul>
     <input type="submit" value="Submit">
 </form>

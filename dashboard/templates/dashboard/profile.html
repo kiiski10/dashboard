@@ -1,5 +1,5 @@
 {% if profile %}
-    Profile id: {{ profile.id }} <br />
+    Profile id: {{ profile.id }} <a href="/ep/{{ profile.id }}">(edit)</a><br />
     Name: {{ profile.name }} <br />
     Image: /media/{{ profile.image }} <br />
     <img src="/media/{{ profile.image }}" /> <br />

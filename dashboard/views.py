@@ -8,7 +8,7 @@ from .forms import ProfileForm
 def editProfile(request, id):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = ProfileForm(request.POST)
+        form = ProfileForm(request.POST, request.FILES)
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
