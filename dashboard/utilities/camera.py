@@ -5,7 +5,6 @@ class Camera:
         self.video = cv2.VideoCapture(camNr)
         self.successful = True
         self.frame = None
-        self.openCvPreviewWin = False
 
     def update(self):
         self.successful, self.frame = self.video.read()
