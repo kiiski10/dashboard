@@ -1,17 +1,15 @@
-{% extends "dashboard/base.html" %}
-{% block content %}
-  {% if profile %}
-      Profile id: {{ profile.id }} <a href="/ep/{{ profile.id }}">(edit)</a><br />
-      Name: {{ profile.name }} <br />
-      Image: /media/{{ profile.image }} <br />
-      <a href="/camera/0/" />Camera</a>
-      <br />
-      <img src="/media/{{ profile.image }}" /> <br />
-      <iframe src="/camera/0/"></iframe>
-      <a href="/camera/0/">
-        Play
-      </a>
-  {% else %}
-      <p>No profile found with this ID</p>
-  {% endif %}
-{% endblock %}
+{% include "dashboard/header.html" %}
+
+{% if profile %}
+  Profile id: {{ profile.id }} <a href="/ep/{{ profile.id }}">(edit)</a><br />
+  Name: {{ profile.name }} <br />
+  Image: /media/{{ profile.image }} <br />
+  <br />
+  <img src="/media/{{ profile.image }}" /> <br />
+  <iframe src="/camera/0/"></iframe> <br />
+  <a href="/camera/0/" />Full screen</a>
+{% else %}
+    <p>No profile found with this ID</p>
+{% endif %}
+
+{% include "dashboard/footer.html" %}

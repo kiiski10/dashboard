@@ -33,9 +33,12 @@ def editProfile(request, id):
     )
 
 def index(request):
+    return HttpResponseRedirect("/sp/")
+
+def selectProfile(request):
     profiles = Profile.objects.all()
     context = { "profiles": profiles }
-    return render(request, "dashboard/index.html", context)
+    return render(request, "dashboard/select-profile.html", context)
 
 def profile(request, id):
     profile = Profile.objects.get(pk=id)
