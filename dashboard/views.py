@@ -26,7 +26,7 @@ def editProfile(request, id):
     else:
         form = ProfileForm()
 
-    return render(request, 'dashboard/editProfile.html', {
+    return render(request, 'dashboard/edit-profile.html', {
             "id": id,
             "form": form
         }
