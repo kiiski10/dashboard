@@ -32,8 +32,22 @@ def editProfile(request, id):
         }
     )
 
+def getGPSLocation():
+    # fake it till u make it
+    lat = 61.289
+    lon = 28.840
+    return(lat, lon)
+
 def index(request):
     return HttpResponseRedirect("/sp/")
+
+def map(request):
+    lat, lon = getGPSLocation()
+    zoom = 12
+    mapProvider = "https://openstreetmap.org/"
+    mapURL = "{}#map={}/{}/{}".format(mapProvider, zoom, lat, lon)
+    print("URL::", mapURL)
+    return HttpResponseRedirect(mapURL)
 
 def selectProfile(request):
     profiles = Profile.objects.all()
