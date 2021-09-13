@@ -1,13 +1,10 @@
 {% include "dashboard/header.html" %}
 
 {% if profile %}
-  Profile id: {{ profile.id }} <a href="/ep/{{ profile.id }}">(edit)</a><br />
-  Name: {{ profile.name }} <br />
-  Image: /media/{{ profile.image }} <br />
   <br />
-  <img src="/media/{{ profile.image }}" /> <br />
-  <iframe src="/camera/0/"></iframe> <br />
-  <a href="/camera/0/" />Full screen</a>
+  <img id="profileImage" src="/media/{{ profile.image }}" />{{ profile.name }}
+  <a href="/ep/{{ profile.id }}">(edit)</a><br />
+  <iframe id="cameraViewFrame" src="/camera/0/"></iframe> <br />
 {% else %}
     <p>No profile found with this ID</p>
 {% endif %}
