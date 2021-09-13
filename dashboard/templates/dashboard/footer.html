@@ -1,6 +1,19 @@
+{% load static %}
     <div id="footer">
       leflet map here <br />
       {{ location }}
     </div>
+
+    <div id="map"></div>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+    <script src="{% static 'leafletRouting/src/utils/LineUtil.Snapping.js' %}"></script>
+    <script src="{% static 'leafletRouting/src/utils/Marker.Snapping.js' %}"></script>
+    <script src="{% static 'leafletRouting/src/L.Routing.js' %}"></script>
+    <script src="{% static 'leafletRouting/src/L.Routing.Storage.js' %}"></script>
+    <script src="{% static 'leafletRouting/src/L.Routing.Draw.js' %}"></script>
+    <script src="{% static 'leafletRouting/src/L.Routing.Edit.js' %}"></script>
+    <script src="http://twitter.github.io/typeahead.js/releases/0.9.3/typeahead.min.js"></script>
+    <script src="{% static 'leafletRouting/app.js' %}></script>
   </body>
 </html>
