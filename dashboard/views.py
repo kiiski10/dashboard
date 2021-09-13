@@ -7,6 +7,8 @@ from .forms import ProfileForm
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse # for LiveView
 import cv2
+from .utilities import camera
+cam = camera.Camera(0)
 
 def editProfile(request, id):
     if request.method == 'POST':
@@ -53,12 +55,8 @@ def gpx(request, id):
     }
     return render(request, "dashboard/gpx.html", context)
 
-
-from .utilities import camera
-
 @gzip.gzip_page
 def cameraView(request, id):
-    cam = camera.Camera(0)
     try:
         return StreamingHttpResponse(cam.frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
     except Exception as e:
