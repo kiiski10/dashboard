@@ -1,10 +1,12 @@
-import cv2
+import cv2, time
 
 class Camera:
     def __init__(self, camNr):
         self.validFrame = True
         self.camNr = camNr
         self.video = cv2.VideoCapture(self.camNr)
+        print("Camera warming up..")
+        time.sleep(1) # Give camera some time to start
         self.frame = None
         print("CAPTURE START")
 
