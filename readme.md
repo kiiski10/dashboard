@@ -17,3 +17,6 @@ Run:
 `pip install opencv-python`
 
 `python manage.py runserver`
+
+Add setting profile in
+http://127.0.0.1:8000/admin/
