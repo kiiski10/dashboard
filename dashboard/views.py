@@ -55,12 +55,12 @@ def gpx(request, id):
 
 
 from .utilities import camera
-camera = camera.Camera(0)
 
 @gzip.gzip_page
 def cameraView(request, id):
+    cam = camera.Camera(0)
     try:
-        return StreamingHttpResponse(camera.frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
+        return StreamingHttpResponse(cam.frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
     except Exception as e:
-        print("ERROR:", e)
-    return HttpResponse(request, 'Ei voittoa')
+        print("CAMERA ERROR:", e)
+        return HttpResponse("Ei voittoa")
