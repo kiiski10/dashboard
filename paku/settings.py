@@ -27,7 +27,8 @@ SECRET_KEY = secrets.secret_key
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+APPEND_SLASH = False
 # Application definition
 
 INSTALLED_APPS = [

@@ -20,4 +20,4 @@ class Camera:
                 b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + self.frameAsJpeg(self.frame) + b'\r\n\r\n'
             )
-        #self.video.release()
+        self.video.release()
