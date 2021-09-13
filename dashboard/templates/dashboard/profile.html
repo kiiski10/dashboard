@@ -1,4 +1,6 @@
-{% include "dashboard/header.html" %}
+{% with location as location %}
+  {% include "dashboard/header.html" %}
+{% endwith %}
 
 {% if profile %}
   <br />
@@ -9,4 +11,6 @@
     <p>No profile found with this ID</p>
 {% endif %}
 
-{% include "dashboard/footer.html" %}
+{% with location as location %}
+  {% include "dashboard/footer.html" %}
+{% endwith %}

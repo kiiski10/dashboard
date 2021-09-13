@@ -8,7 +8,24 @@ from django.views.decorators import gzip
 from django.http import StreamingHttpResponse # for LiveView
 import cv2
 from .utilities import camera
+import random
 cam = camera.Camera(0)
+
+
+def getGPSLocation():
+    # import gpsd
+    # gpsd.connect()
+    # packet = gpsd.get_current()
+    # print(packet.position())
+    #
+    # fake it till u make it
+    lat = 28.840 + random.randint(-10,5)
+    lon = 61.289 + random.randint(-10,5)
+    size = 0.1
+    print("GOT LOCATION:", lat, lon)
+    return({"lat": lat, "lon": lon})
+
+currentLocation = getGPSLocation()
 
 def editProfile(request, id):
     if request.method == 'POST':
@@ -32,26 +49,26 @@ def editProfile(request, id):
         }
     )
 
-def getGPSLocation():
-    # fake it till u make it
-    lat = 61.289
-    lon = 28.840
-    return(lat, lon)
-
 def index(request):
     return HttpResponseRedirect("/sp/")
 
 def map(request):
-    lat, lon = getGPSLocation()
+    location = currentLocation
     zoom = 12
     mapProvider = "https://openstreetmap.org/"
-    mapURL = "{}#map={}/{}/{}".format(mapProvider, zoom, lat, lon)
+    mapURL = "{0}directions?from={2},{3}&to=#map={1}/{2}/{3}".format(
+        mapProvider,
+        zoom,
+        location["lat"],
+        location["lon"]
+    )
     print("URL::", mapURL)
     return HttpResponseRedirect(mapURL)
 
 def selectProfile(request):
     profiles = Profile.objects.all()
-    context = { "profiles": profiles }
+    currentLocation = getGPSLocation()
+    context = { "profiles": profiles, "location": currentLocation }
     return render(request, "dashboard/select-profile.html", context)
 
 def profile(request, id):
