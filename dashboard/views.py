@@ -73,7 +73,7 @@ def selectProfile(request):
 
 def profile(request, id):
     profile = Profile.objects.get(pk=id)
-    context = { "profile": profile }
+    context = { "profile": profile, "location": currentLocation }
     return render(request, "dashboard/profile.html", context)
 
 def image(request, name):
