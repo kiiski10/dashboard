@@ -83,12 +83,20 @@ def map(request, loc):
 
 def selectProfile(request):
     profiles = Profile.objects.all()
-    context = { "profiles": profiles, "location": getGPSLocation() }
+    context = {
+        "mapboxAccessToken": mapboxAccessToken,
+        "profiles": profiles,
+        "location": getGPSLocation()
+    }
     return render(request, "dashboard/select-profile.html", context)
 
 def profile(request, id):
     profile = Profile.objects.get(pk=id)
-    context = { "profile": profile, "location": getGPSLocation() }
+    context = {
+        "mapboxAccessToken": mapboxAccessToken,
+        "profile": profile,
+        "location": getGPSLocation()
+    }
     return render(request, "dashboard/profile.html", context)
 
 def image(request, name):

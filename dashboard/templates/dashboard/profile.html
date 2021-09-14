@@ -12,5 +12,7 @@
 {% endif %}
 
 {% with location as location %}
+{% with mapboxAccessToken as mapboxAccessToken %}
   {% include "dashboard/footer.html" %}
+{% endwith %}
 {% endwith %}
