@@ -27,8 +27,10 @@ webcams = findWebCams()
 print("CAMERAS FOUND:")
 for c in webcams:
     print("\t", c)
+
 cam = camera.Camera(0)
 print(cam.video.isOpened())
+mapboxAccessToken = settings.MAPBOX_ACCESS_TOKEN
 
 def getGPSLocation():
     # import gpsd
@@ -37,12 +39,10 @@ def getGPSLocation():
     # print(packet.position())
     #
     # fake it till u make it
-    lat = str(61.289 + random.randint(-5,5))
-    lon = str(28.840 + random.randint(-5,5))
+    lat = str(61.289 + (random.randint(-500, 500) / 99.9) )[:8]
+    lon = str(28.840 + (random.randint(-500, 500) / 99.9) )[:8]
     print("GOT LOCATION:", lat, lon)
     return({"lat": lat.ljust(8, "0"), "lon": lon.ljust(8, "0")})
-
-currentLocation = getGPSLocation()
 
 def editProfile(request, id):
     if request.method == 'POST':
@@ -51,41 +51,44 @@ def editProfile(request, id):
         if form.is_valid():
             print("CLEAN FORM DATA:", form.cleaned_data)
             return HttpResponseRedirect("/ep/" + id + "/")
-
     else:
         # TODO: prepopulate fields
         form = ProfileForm()
 
     return render(request, 'dashboard/edit-profile.html', {
+            "mapboxAccessToken": mapboxAccessToken,
+            "location": getGPSLocation(),
             "id": id,
             "form": form
         }
     )
 
 def index(request):
-    currentLocation = getGPSLocation()
     return HttpResponseRedirect("/sp/")
 
-def map(request):
-    zoom = 10
+def map(request, loc):
+    loc = loc.split(",")
+    zoom = loc[0]
+    lat = loc[1]
+    lon = loc[2]
     mapProvider = "https://openstreetmap.org/"
     mapURL = "{0}directions?from={2},{3}&to=#map={1}/{2}/{3}".format(
         mapProvider,
         zoom,
-        currentLocation["lat"],
-        currentLocation["lon"],
+        lat,
+        lon,
     )
     print("URL::", mapURL)
     return HttpResponseRedirect(mapURL)
 
 def selectProfile(request):
     profiles = Profile.objects.all()
-    context = { "profiles": profiles, "location": currentLocation }
+    context = { "profiles": profiles, "location": getGPSLocation() }
     return render(request, "dashboard/select-profile.html", context)
 
 def profile(request, id):
     profile = Profile.objects.get(pk=id)
-    context = { "profile": profile, "location": currentLocation }
+    context = { "profile": profile, "location": getGPSLocation() }
     return render(request, "dashboard/profile.html", context)
 
 def image(request, name):

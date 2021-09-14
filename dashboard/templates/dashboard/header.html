@@ -5,11 +5,16 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""/
+    >
   </head>
   <body>
     <div id="mainWrap">
       <div id="header">
         <a href="/"> <h3>Dashboard</h3></a> <br />
+        {{ location }}
         <div class="horizontalMenu"
           <ul>
             <li>
@@ -18,7 +23,7 @@
             <li>
               <a
                 target="_blank"
-                href="/map/"
+                href="/map/11,{{ location.lat }},{{ location.lon }}"
               >
                 Plan route
               </a>

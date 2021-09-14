@@ -1,4 +1,6 @@
-{% include "dashboard/header.html" %}
+{% with location as location %}
+  {% include "dashboard/header.html" %}
+{% endwith %}
 
 <form action="/ep/{{ id }}/" method="post">
     {% csrf_token %}
@@ -10,4 +12,8 @@
     <input type="submit" value="Submit">
 </form>
 
-{% include "dashboard/footer.html" %}
+{% with location as location %}
+{% with mapboxAccessToken as mapboxAccessToken %}
+  {% include "dashboard/footer.html" %}
+{% endwith %}
+{% endwith %}

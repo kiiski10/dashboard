@@ -9,5 +9,5 @@ urlpatterns = [
     path("media/img/<str:name>", views.image, name="image"),
     path("media/g/<str:id>/", views.gpx, name="gpx"),
     path("camera/<int:id>/", views.cameraView, name="cameraView"),
-    path("map/", views.map, name="map")
+    path("map/<str:loc>", views.map, name="map")
 ]
