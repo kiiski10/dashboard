@@ -5,7 +5,7 @@
 {% if profile %}
   <br />
   <img id="profileImage" src="/media/{{ profile.image }}" />{{ profile.name }}
-  <a href="/ep/{{ profile.id }}">(edit)</a><br />
+  <a href="/ep/{{ profile.id }}/">(edit)</a><br />
   <iframe id="cameraViewFrame" src="/camera/0/"></iframe> <br />
 {% else %}
     <p>No profile found with this ID</p>

@@ -9,8 +9,26 @@ from django.http import StreamingHttpResponse # for LiveView
 import cv2
 from .utilities import camera
 import random
-cam = camera.Camera(0)
 
+def findWebCams():
+    i = 0
+    arr = []
+    while i < 100:
+        cap = cv2.VideoCapture(i)
+        if not cap.isOpened():
+            break
+        else:
+            arr.append(i)
+        cap.release()
+        i += 1
+    return arr
+
+webcams = findWebCams()
+print("CAMERAS FOUND:")
+for c in webcams:
+    print("\t", c)
+cam = camera.Camera(0)
+print(cam.video.isOpened())
 
 def getGPSLocation():
     # import gpsd
@@ -19,11 +37,10 @@ def getGPSLocation():
     # print(packet.position())
     #
     # fake it till u make it
-    lat = 28.840 + random.randint(-10,5)
-    lon = 61.289 + random.randint(-10,5)
-    size = 0.1
+    lat = str(61.289 + random.randint(-5,5))
+    lon = str(28.840 + random.randint(-5,5))
     print("GOT LOCATION:", lat, lon)
-    return({"lat": lat, "lon": lon})
+    return({"lat": lat.ljust(8, "0"), "lon": lon.ljust(8, "0")})
 
 currentLocation = getGPSLocation()
 
@@ -31,16 +48,12 @@ def editProfile(request, id):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = ProfileForm(request.POST, request.FILES)
-        # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
             print("CLEAN FORM DATA:", form.cleaned_data)
-            # redirect to a new URL:
-            return HttpResponseRedirect("/ep/" + id)
+            return HttpResponseRedirect("/ep/" + id + "/")
 
-    # if a GET (or any other method) we'll create a blank form
     else:
+        # TODO: prepopulate fields
         form = ProfileForm()
 
     return render(request, 'dashboard/edit-profile.html', {
@@ -50,24 +63,23 @@ def editProfile(request, id):
     )
 
 def index(request):
+    currentLocation = getGPSLocation()
     return HttpResponseRedirect("/sp/")
 
 def map(request):
-    location = currentLocation
-    zoom = 12
+    zoom = 10
     mapProvider = "https://openstreetmap.org/"
     mapURL = "{0}directions?from={2},{3}&to=#map={1}/{2}/{3}".format(
         mapProvider,
         zoom,
-        location["lat"],
-        location["lon"]
+        currentLocation["lat"],
+        currentLocation["lon"],
     )
     print("URL::", mapURL)
     return HttpResponseRedirect(mapURL)
 
 def selectProfile(request):
     profiles = Profile.objects.all()
-    currentLocation = getGPSLocation()
     context = { "profiles": profiles, "location": currentLocation }
     return render(request, "dashboard/select-profile.html", context)
 

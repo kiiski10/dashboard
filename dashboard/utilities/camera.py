@@ -5,6 +5,8 @@ class Camera:
         self.validFrame = True
         self.camNr = camNr
         self.video = cv2.VideoCapture(self.camNr)
+        self.video.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        self.video.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         print("Camera warming up..")
         time.sleep(1) # Give camera some time to start
         self.frame = None
