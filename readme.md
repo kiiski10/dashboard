@@ -10,6 +10,9 @@ New `SECRET_KEY` can be generated with:
 ```
   # put your django SECRET_KEY here
   secret_key = "abc123"
+  
+  # put your mapbox.com access token here
+  mapbox_access_token = "pk.abcdefg1234567"
 ```
 
 Run:
