@@ -11,23 +11,23 @@
     >
   </head>
   <body>
+
+    <div id="verticalMenu">
+        <div class="verticalMenuItem">
+          <a href="">Cameras</a>
+        </div>
+        <div class="verticalMenuItem">
+          <a href="">Settings</a>
+        </div>
+        <div class="verticalMenuItem">
+          <a href="/map/11,{{ location.lat }},{{ location.lon }}" target="_blank"target="_blank">Plan route</a>
+        </div>
+        <div class="verticalMenuItem">
+          <a href="/sp/">Select profile</a>
+        </div>
+    </div>
+    
     <div id="mainWrap">
       <div id="header">
-        <a href="/"> <h3>Dashboard</h3></a> <br />
-        {{ location }}
-        <div class="horizontalMenu"
-          <ul>
-            <li>
-              <a href="/sp/">Select profile</a>
-            </li>
-            <li>
-              <a
-                target="_blank"
-                href="/map/11,{{ location.lat }},{{ location.lon }}"
-              >
-                Plan route
-              </a>
-            </li>
-          </ul>
-        </div>
+        Dashboard
       </div>

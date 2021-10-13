@@ -46,3 +46,22 @@
   height: 480px;
   width: 100%;
 }
+
+#verticalMenu {
+  z-index: 9999;
+  position: fixed;
+  right: 0px;
+  width: 200px;
+  background-color: green;
+}
+
+.verticalMenuItem {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.verticalMenuItem:hover {
+  background-color: white;
+}

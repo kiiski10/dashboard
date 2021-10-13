@@ -8,7 +8,7 @@ class Camera:
         self.video.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         self.video.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         print("Camera warming up..")
-        time.sleep(1) # Give camera some time to start
+        #time.sleep(1) # Give camera some time to start
         self.frame = None
         print("CAPTURE START")
 
@@ -16,7 +16,7 @@ class Camera:
         successful, self.frame = self.video.read()
         if not successful:
             self.validFrame = False
-            print("ERROR")
+            print("CAMERA ERROR")
 
     def __del__(self):
         print("CAPTURE END")
