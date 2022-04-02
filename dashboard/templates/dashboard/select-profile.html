@@ -2,11 +2,13 @@
 {% with location as location %}
   {% include "dashboard/header.html" %}
 {% endwith %}
+
 {% if profiles %}
   <ul>
 	  {% for profile in profiles %}
 	  <li>
 			<div>
+				<img id="profilePicture" src="/media/{{ profile.image }}" />
 				<a href="/p/{{ profile.id }}/">{{ profile.name }}</a>
 			</div>
 		</li>
