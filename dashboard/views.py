@@ -150,7 +150,7 @@ def multiCameraView(request):
     return render(request, "dashboard/cameras.html", context)
 
 def cameraSettings(request, id):
-    camera = Camera.objects.get(device_id=id)
+    camera = Camera.objects.get(pk=id)
 
     if request.method == 'POST':
         form = CameraForm(request.POST, instance=camera)

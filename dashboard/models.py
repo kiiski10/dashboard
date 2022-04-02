@@ -4,8 +4,7 @@ class Profile(models.Model):
     name = models.CharField(max_length=200)
     image = models.ImageField(blank=True, upload_to='img/')
     cameras = models.ManyToManyField(
-        "Camera",
-        related_name="foo"
+        "Camera"
     )
 
     def __str__(self):
