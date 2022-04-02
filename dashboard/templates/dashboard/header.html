@@ -3,24 +3,21 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-      crossorigin=""/
-    >
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile-picture.css' %}">
   </head>
   <body>
 
     <div id="verticalMenu">
         <div class="verticalMenuItem">
-          <a href="">Cameras</a>
+          <a href="/cameras/">Cameras</a>
         </div>
         <div class="verticalMenuItem">
-          <a href="/admin/">Admin</a>
+          <a href="/map/">Map</a>
         </div>
         <div class="verticalMenuItem">
-          <a href="/map/11,{{ location.lat }},{{ location.lon }}" target="_blank"target="_blank">Plan route</a>
+          <a href="/external-map/11,{{ location.lat }},{{ location.lon }}" target="_blank"target="_blank">Plan route</a>
         </div>
         <div class="verticalMenuItem">
           <a href="/sp/">Select profile</a>

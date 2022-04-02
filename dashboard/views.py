@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
-from .models import Profile
+from .models import Profile, Location, Camera
 from .forms import ProfileForm
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse # for LiveView
@@ -29,7 +29,7 @@ for c in webcams:
     print("\t", c)
 
 cam = camera.Camera(0)
-print(cam.video.isOpened())
+print("CAM STARTED", cam.video.isOpened())
 mapboxAccessToken = settings.MAPBOX_ACCESS_TOKEN
 
 def getGPSLocation():
@@ -66,7 +66,7 @@ def editProfile(request, id):
 def index(request):
     return HttpResponseRedirect("/sp/")
 
-def map(request, loc):
+def externalMap(request, loc):
     loc = loc.split(",")
     zoom = loc[0]
     lat = loc[1]
@@ -84,7 +84,6 @@ def map(request, loc):
 def selectProfile(request):
     profiles = Profile.objects.all()
     context = {
-        "mapboxAccessToken": mapboxAccessToken,
         "profiles": profiles,
         "location": getGPSLocation()
     }
@@ -93,7 +92,6 @@ def selectProfile(request):
 def profile(request, id):
     profile = Profile.objects.get(pk=id)
     context = {
-        "mapboxAccessToken": mapboxAccessToken,
         "profile": profile,
         "location": getGPSLocation()
     }
@@ -112,10 +110,32 @@ def gpx(request, id):
     }
     return render(request, "dashboard/gpx.html", context)
 
+def map(request):
+    print("REQ -->", request)
+    context = {
+        "mapboxAccessToken": mapboxAccessToken,
+        "user": request.user,
+        "location": getGPSLocation(),
+    }
+    return render(request, "dashboard/map.html", context)
+
 @gzip.gzip_page
-def cameraView(request, id):
+def cameraStream(request, id):
+    # TODO: use id to get instance for certain camera device
     try:
         return StreamingHttpResponse(cam.frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
     except Exception as e:
         print("CAMERA ERROR:", e)
         return HttpResponse("Ei voittoa")
+
+def multiCameraView(request):
+    availableCameras = Camera.objects.all()
+    if not availableCameras:
+        availableCameras = []
+
+    context = {
+        "user": request.user,
+        "location": getGPSLocation(),
+        "cameras": availableCameras
+    }
+    return render(request, "dashboard/cameras.html", context)

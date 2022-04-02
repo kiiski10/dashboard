@@ -4,16 +4,12 @@
 
 <form action="/ep/{{ id }}/" method="post">
     {% csrf_token %}
-    <ul>
-      <li> Name {{ form.name }} </li>
-      <li> Widgets {{ form.enabled_widgets }} </li>
-      <li> Image {{ form.image }} </li>
-    </ul>
+    {{ form }}
     <input type="submit" value="Submit">
 </form>
 
 {% with location as location %}
-{% with mapboxAccessToken as mapboxAccessToken %}
-  {% include "dashboard/footer.html" %}
-{% endwith %}
+  {% with mapboxAccessToken as mapboxAccessToken %}
+    {% include "dashboard/footer.html" %}
+  {% endwith %}
 {% endwith %}

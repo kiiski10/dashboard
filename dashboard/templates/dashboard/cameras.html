@@ -1,0 +1,12 @@
+
+{% load static %}
+{% with location as location %}
+  {% include "dashboard/header.html" %}
+{% endwith %}
+
+{% for camera in cameras %}
+  camera: {{ camera.device_id }}
+  <iframe id="cameraViewFrame" src="/camera/{{ camera.device_id }}/"></iframe> <br />
+{% endfor %}
+
+{% include "dashboard/footer.html" %}

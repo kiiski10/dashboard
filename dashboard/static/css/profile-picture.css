@@ -1,0 +1,10 @@
+
+#profilePicture {
+	object-fit: cover;
+	margin: 10px;
+	padding: 2px;
+	width: 100px;
+	height: 100px;
+	border-radius: 100%;
+	background-color: rgb(30,200,100);
+  }

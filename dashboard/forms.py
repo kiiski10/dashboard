@@ -6,6 +6,5 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = [
             "name",
-            "enabled_widgets",
             "image"
         ]

@@ -2,17 +2,12 @@
   {% include "dashboard/header.html" %}
 {% endwith %}
 
-{% if profile %}
-  <br />
-  <img id="profileImage" src="/media/{{ profile.image }}" />{{ profile.name }}
-  <a href="/ep/{{ profile.id }}/">(edit)</a><br />
-  <iframe id="cameraViewFrame" src="/camera/0/"></iframe> <br />
-{% else %}
-    <p>No profile found with this ID</p>
+<br /><img id="profilePicture" src="/media/{{ profile.image }}" />
+<br />{{ profile.name }}
+<br /><a href="/ep/{{ profile.id }}/">(edit)</a>
+<br />
+{% if profile.camera %}
+  {{ profile.camera }}
 {% endif %}
 
-{% with location as location %}
-{% with mapboxAccessToken as mapboxAccessToken %}
-  {% include "dashboard/footer.html" %}
-{% endwith %}
-{% endwith %}
+{% include "dashboard/footer.html" %}

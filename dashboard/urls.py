@@ -6,8 +6,10 @@ urlpatterns = [
     path("p/<str:id>/", views.profile, name="profile"),
     path("ep/<str:id>/", views.editProfile, name="editProfile"),
     path("sp/", views.selectProfile, name="selectProfile"),
+    path("map/", views.map, name="map"),
     path("media/img/<str:name>", views.image, name="image"),
     path("media/g/<str:id>/", views.gpx, name="gpx"),
-    path("camera/<int:id>/", views.cameraView, name="cameraView"),
-    path("map/<str:loc>", views.map, name="map")
+    path("cameras/", views.multiCameraView, name="multiCameraView"),
+    path("camera/<int:id>/", views.cameraStream, name="cameraView"),
+    path("external-map/<str:loc>", views.externalMap, name="externalMap"),
 ]
