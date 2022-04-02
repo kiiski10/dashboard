@@ -1,24 +1,34 @@
-
 {% load static %}
+{% load bootstrap_icons %}
 
 {% with location as location %}
 	{% include "dashboard/header.html" %}
 {% endwith %}
 
-{% for camera in cameras %}
-	<p>
-		{{ camera.device_id }}:<br />{{ camera.label }}
-		<a href="/settings/camera/{{ camera.device_id }}/">Settings</a>
-		{% if camera.active %}
-			<div>
-				<iframe id="cameraViewFrame" src="/camera/{{ camera.device_id }}/"></iframe> <br />
-			</div>
-		{% else %}
-			<div>
-				Camera not active
-			</div>
-		{% endif %}
-	</p>
-{% endfor %}
+ <table class="table">
+	<thead>
+		<th>#</th>
+		<th>Label</th>
+		<th>Settings</th>
+		<th>Image</th>
+	</thead>
+	<tbody>
+		{% for camera in cameras %}
+		<tr>
+			<th>{{ forloop.counter }}
+			</th>
+			<td>{{ camera.label }}</td>
+			<td><a href="/settings/camera/{{ camera.device_id }}/">{% bs_icon 'gear' size='1.5em' %}</a></td>
+			<td>
+				{% if camera.active %}
+					<iframe id="cameraViewFrame" src="/camera/{{ camera.device_id }}/"></iframe> <br />
+				{% else %}
+					{% bs_icon 'camera-video-off' size='1.5em' color="grey" %}
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
 
 {% include "dashboard/footer.html" %}

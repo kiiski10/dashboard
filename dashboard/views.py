@@ -59,7 +59,7 @@ def editProfile(request, id):
         )
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/ep/" + id + "/")
+            return HttpResponseRedirect("/p/" + id + "/")
     else:
         form = ProfileForm(model_to_dict(profile))
 
@@ -67,7 +67,8 @@ def editProfile(request, id):
             "mapboxAccessToken": mapboxAccessToken,
             "location": getGPSLocation(),
             "id": id,
-            "form": form
+            "form": form,
+            "profile": profile,
         }
     )
 
@@ -155,13 +156,13 @@ def cameraSettings(request, id):
         form = CameraForm(request.POST, instance=camera)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/settings/camera/{}/".format(id))
+            return HttpResponseRedirect("/cameras/")
     else:
-        initial_fields = model_to_dict(camera)
-        form = CameraForm(initial=initial_fields)
+        form = CameraForm(model_to_dict(camera))
 
     context = {
         "id": id,
-        "form": form
+        "form": form,
+        "camera": camera,
     }
     return render(request, "dashboard/camera-settings.html", context)

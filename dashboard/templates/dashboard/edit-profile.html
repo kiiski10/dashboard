@@ -1,11 +1,21 @@
 {% with location as location %}
 	{% include "dashboard/header.html" %}
 {% endwith %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+<h3>Edit profile</h3>
+<h4>{{ profile.name|title }}</h4>
 
 <form action="/ep/{{ id }}/" method="post">
-	{% csrf_token %}
-	{{ form }}
-	<input type="submit" value="Submit">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+	{% buttons %}
+    <input type="submit" value="Submit">
+	{% endbuttons %}
 </form>
 
 {% include "dashboard/footer.html" %}

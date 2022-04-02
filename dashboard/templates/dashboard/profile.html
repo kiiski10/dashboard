@@ -1,56 +1,67 @@
 {% with location as location %}
-  {% include "dashboard/header.html" %}
+	{% include "dashboard/header.html" %}
 {% endwith %}
+{% load bootstrap_icons %}
 
-<br /><img id="profilePicture" src="/media/{{ profile.image }}" />
-<br />{{ profile.name }} <a href="/ep/{{ profile.id }}/">(edit)</a>
-<br />
-<table>
-  <th>Camera ID</th>
-  <th>Direction</th>
-  <th>Note</th>
-  <th>Active</th>
+<h4>
+	{{ profile.name }}
+</h4>
 
-  {% for camera in cameras %}
-  <tr>
-    <th>{{ camera.device_id }}</th>
-    <td>
-      {{ camera.direction }}
-    </td>
-    <td>
-      {{ camera.note }}
-    </td>
-    <td>
-      {{ camera.active }}
-    </td>
-  </tr>
-  {% endfor %}
+<a href="/ep/{{ profile.id }}/">{% bs_icon 'gear' %}</a>
+<img id="profilePicture" src="/media/{{ profile.image }}" />
 
+<table class="table">
+	<thead>
+		<tr>
+			<th>Camera ID</th>
+			<th>Direction</th>
+			<th>Note</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for camera in cameras %}
+			<tr>
+				<th>
+					{{ camera.label }}
+				</th>
+				<td>{{ camera.direction }}</td>
+				<td>{{ camera.note }}</td>
+				<td>
+					{% if camera.active %}
+						{% bs_icon 'camera-video' size='1.5em' color="green" %}
+					{% else %}
+						{% bs_icon 'camera-video-off' size='1.5em' color="grey" %}
+					{% endif %}
+				</td>
+
+			</tr>
+		{% endfor %}
+	</tbody>
 </table>
 
-<table>
-  <tbody>
-    <tr>
-      <th>Marker label</th>
-      <th>Note</th>
-      <th>Type</th>
-      <th>Location</th>
-    </tr>
-    {% for marker in waypoints %}
-      <th>
-        {{ marker.label }}
-      </th>
-      <td>
-        {{ marker.note }}
-      </td>
-      <td>
-        {{ marker.location_type }}
-      </td>
-      <td>
-        {{ marker.prettyCoords }}
-      </td>
-    {% endfor %}
-  </tbody>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Marker label</th>
+			<th>Note</th>
+			<th>Type</th>
+			<th>Location</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for marker in waypoints %}
+			<tr>
+				<th>
+					{{ marker.label }}
+				</th>
+				<td>{{ marker.note }}</td>
+				<td>{{ marker.location_type }}</td>
+				<td>{{ marker.prettyCoords }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
 </table>
+
 {% include "dashboard/footer.html" %}
 

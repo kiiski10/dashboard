@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap5',
     "dashboard",
+    'django_bootstrap_icons',
 ]
 
 MIDDLEWARE = [
