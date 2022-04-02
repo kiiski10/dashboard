@@ -1,9 +1,13 @@
 {% with location as location %}
-  {% include "dashboard/header.html" %}
+	{% include "dashboard/header.html" %}
 {% endwith %}
 
-{{ form }}
-<br />{{ profile.name }}
-<br />
+<form action="/settings/camera/{{ id }}/" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+	{% buttons %}
+    <input type="submit" value="Submit">
+	{% endbuttons %}
+</form>
 
 {% include "dashboard/footer.html" %}

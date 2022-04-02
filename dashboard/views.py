@@ -50,13 +50,17 @@ def getGPSLocation():
     return({"lat": lat.ljust(8, "0"), "lon": lon.ljust(8, "0")})
 
 def editProfile(request, id):
+    profile = Profile.objects.get(pk=id)
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = ProfileForm(request.POST, request.FILES)
+        form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=profile
+        )
         if form.is_valid():
+            form.save()
             return HttpResponseRedirect("/ep/" + id + "/")
     else:
-        profile = Profile.objects.get(pk=id)
         form = ProfileForm(model_to_dict(profile))
 
     return render(request, 'dashboard/edit-profile.html', {
@@ -148,16 +152,16 @@ def cameraSettings(request, id):
     camera = Camera.objects.get(device_id=id)
 
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = CameraForm(request.POST)
+        form = CameraForm(request.POST, instance=camera)
         if form.is_valid():
-            print("CLEAN FORM DATA:", form.cleaned_data)
-            return HttpResponseRedirect("/settings/camera/" + id + "/")
+            form.save()
+            return HttpResponseRedirect("/settings/camera/{}/".format(id))
     else:
         initial_fields = model_to_dict(camera)
         form = CameraForm(initial=initial_fields)
 
     context = {
+        "id": id,
         "form": form
     }
     return render(request, "dashboard/camera-settings.html", context)
