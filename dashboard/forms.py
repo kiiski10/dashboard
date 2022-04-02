@@ -1,10 +1,17 @@
 from django import forms
-from .models import Profile
+from .models import Profile, Camera, Location
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = [
-            "name",
-            "image"
-        ]
+        fields = "__all__"
+
+class CameraForm(forms.ModelForm):
+    class Meta:
+        model = Camera
+        fields = "__all__"
+
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = "__all__"

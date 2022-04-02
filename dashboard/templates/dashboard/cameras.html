@@ -5,7 +5,8 @@
 {% endwith %}
 
 {% for camera in cameras %}
-  camera: {{ camera.device_id }}
+<h3>{{ camera.label }}</h3>
+{{ camera.device_id }}
   <iframe id="cameraViewFrame" src="/camera/{{ camera.device_id }}/"></iframe> <br />
 {% endfor %}
 

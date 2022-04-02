@@ -28,8 +28,11 @@ print("CAMERAS FOUND:")
 for c in webcams:
     print("\t", c)
 
-cam = camera.Camera(0)
-print("CAM STARTED", cam.video.isOpened())
+cameras = {}
+for cam_id in webcams:
+    cameras[cam_id] = camera.Camera(cam_id)
+    print("CAM '{}' STARTED:{}".format(cam_id, cameras[cam_id].video.isOpened()))
+
 mapboxAccessToken = settings.MAPBOX_ACCESS_TOKEN
 
 def getGPSLocation():
@@ -121,11 +124,10 @@ def map(request):
 
 @gzip.gzip_page
 def cameraStream(request, id):
-    # TODO: use id to get instance for certain camera device
     try:
-        return StreamingHttpResponse(cam.frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
+        return StreamingHttpResponse(cameras[id].frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
     except Exception as e:
-        print("CAMERA ERROR:", e)
+        print("CANT START CAMERA '{}'".format(id))
         return HttpResponse("Ei voittoa")
 
 def multiCameraView(request):
