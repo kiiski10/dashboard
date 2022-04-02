@@ -94,10 +94,14 @@ def selectProfile(request):
 
 def profile(request, id):
     profile = Profile.objects.get(pk=id)
+    waypoints = profile.location_set.all()
+    cameras = profile.cameras.all()
+
     context = {
         "profile": profile,
         "location": getGPSLocation(),
-        "waypoints": Location.objects.filter(creator=profile)
+        "waypoints": waypoints,
+        "cameras": cameras,
     }
     return render(request, "dashboard/profile.html", context)
 

@@ -3,10 +3,9 @@ from django.db import models
 class Profile(models.Model):
     name = models.CharField(max_length=200)
     image = models.ImageField(blank=True, upload_to='img/')
-    camera = models.ForeignKey(
+    cameras = models.ManyToManyField(
         "Camera",
-        on_delete=models.CASCADE,
-        null=True,
+        related_name="foo"
     )
 
     def __str__(self):

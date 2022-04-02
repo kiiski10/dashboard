@@ -11,20 +11,20 @@
   <th>Note</th>
   <th>Active</th>
 
-  {% if profile.camera %}
+  {% for camera in cameras %}
   <tr>
-    <th>{{ profile.camera.device_id }}</th>
+    <th>{{ camera.device_id }}</th>
     <td>
-      {{ profile.camera.direction }}
+      {{ camera.direction }}
     </td>
     <td>
-      {{ profile.camera.note }}
+      {{ camera.note }}
     </td>
     <td>
-      {{ profile.camera.active }}
+      {{ camera.active }}
     </td>
   </tr>
-  {% endif %}
+  {% endfor %}
 
 </table>
 
