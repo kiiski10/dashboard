@@ -33,6 +33,10 @@ class Location(models.Model):
     def __str__(self):
         return "'{}': {},{}".format(self.label, self.lat, self.lon)
 
+    @property
+    def prettyCoords(self):
+        return("{:.3f}, {:.3f}".format(self.lat, self.lon))
+
 
 class Camera(models.Model):
     DIRECTION_CHOICES =(

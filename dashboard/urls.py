@@ -11,5 +11,6 @@ urlpatterns = [
     path("media/g/<str:id>/", views.gpx, name="gpx"),
     path("cameras/", views.multiCameraView, name="multiCameraView"),
     path("camera/<int:id>/", views.cameraStream, name="cameraView"),
+    path("settings/camera/<int:id>/", views.cameraSettings, name="cameraSettingView"),
     path("external-map/<str:loc>", views.externalMap, name="externalMap"),
 ]

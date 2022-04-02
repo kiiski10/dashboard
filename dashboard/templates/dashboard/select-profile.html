@@ -4,12 +4,13 @@
 {% endwith %}
 {% if profiles %}
   <ul>
-      {% for profile in profiles %}
-          <li>
-            <img id="profileImage" src="/media/{{ profile.image }}" />
-            <a href="/p/{{ profile.id }}/">{{ profile.name }}</a>
-          </li>
-      {% endfor %}
+	  {% for profile in profiles %}
+	  <li>
+			<div>
+				<a href="/p/{{ profile.id }}/">{{ profile.name }}</a>
+			</div>
+		</li>
+		{% endfor %}
   </ul>
 {% else %}
     <p>

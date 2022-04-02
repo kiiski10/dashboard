@@ -3,11 +3,54 @@
 {% endwith %}
 
 <br /><img id="profilePicture" src="/media/{{ profile.image }}" />
-<br />{{ profile.name }}
-<br /><a href="/ep/{{ profile.id }}/">(edit)</a>
+<br />{{ profile.name }} <a href="/ep/{{ profile.id }}/">(edit)</a>
 <br />
-{% if profile.camera %}
-  {{ profile.camera }}
-{% endif %}
+<table>
+  <th>Camera ID</th>
+  <th>Direction</th>
+  <th>Note</th>
+  <th>Active</th>
 
+  {% if profile.camera %}
+  <tr>
+    <th>{{ profile.camera.device_id }}</th>
+    <td>
+      {{ profile.camera.direction }}
+    </td>
+    <td>
+      {{ profile.camera.note }}
+    </td>
+    <td>
+      {{ profile.camera.active }}
+    </td>
+  </tr>
+  {% endif %}
+
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <th>Marker label</th>
+      <th>Note</th>
+      <th>Type</th>
+      <th>Location</th>
+    </tr>
+    {% for marker in waypoints %}
+      <th>
+        {{ marker.label }}
+      </th>
+      <td>
+        {{ marker.note }}
+      </td>
+      <td>
+        {{ marker.location_type }}
+      </td>
+      <td>
+        {{ marker.prettyCoords }}
+      </td>
+    {% endfor %}
+  </tbody>
+</table>
 {% include "dashboard/footer.html" %}
+

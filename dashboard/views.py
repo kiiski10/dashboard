@@ -3,9 +3,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
 from .models import Profile, Location, Camera
-from .forms import ProfileForm
+from .forms import ProfileForm, LocationForm, CameraForm
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse # for LiveView
+from django.forms.models import model_to_dict
+
 import cv2
 from .utilities import camera
 import random
@@ -52,11 +54,10 @@ def editProfile(request, id):
         # create a form instance and populate it with data from the request:
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            print("CLEAN FORM DATA:", form.cleaned_data)
             return HttpResponseRedirect("/ep/" + id + "/")
     else:
-        # TODO: prepopulate fields
-        form = ProfileForm()
+        profile = Profile.objects.get(pk=id)
+        form = ProfileForm(model_to_dict(profile))
 
     return render(request, 'dashboard/edit-profile.html', {
             "mapboxAccessToken": mapboxAccessToken,
@@ -81,7 +82,6 @@ def externalMap(request, loc):
         lat,
         lon,
     )
-    print("URL::", mapURL)
     return HttpResponseRedirect(mapURL)
 
 def selectProfile(request):
@@ -96,7 +96,8 @@ def profile(request, id):
     profile = Profile.objects.get(pk=id)
     context = {
         "profile": profile,
-        "location": getGPSLocation()
+        "location": getGPSLocation(),
+        "waypoints": Location.objects.filter(creator=profile)
     }
     return render(request, "dashboard/profile.html", context)
 
@@ -106,15 +107,12 @@ def image(request, name):
     return HttpResponse(image)
 
 def gpx(request, id):
-    print("REQ -->", request)
-    print("NAME -->", id)
     context = {
         "id": id
     }
     return render(request, "dashboard/gpx.html", context)
 
 def map(request):
-    print("REQ -->", request)
     context = {
         "mapboxAccessToken": mapboxAccessToken,
         "user": request.user,
@@ -141,3 +139,21 @@ def multiCameraView(request):
         "cameras": availableCameras
     }
     return render(request, "dashboard/cameras.html", context)
+
+def cameraSettings(request, id):
+    camera = Camera.objects.get(device_id=id)
+
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = CameraForm(request.POST)
+        if form.is_valid():
+            print("CLEAN FORM DATA:", form.cleaned_data)
+            return HttpResponseRedirect("/settings/camera/" + id + "/")
+    else:
+        initial_fields = model_to_dict(camera)
+        form = CameraForm(initial=initial_fields)
+
+    context = {
+        "form": form
+    }
+    return render(request, "dashboard/camera-settings.html", context)
