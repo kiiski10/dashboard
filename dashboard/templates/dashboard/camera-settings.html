@@ -1,21 +1,24 @@
-{% with location as location %}
-	{% include "dashboard/header.html" %}
-{% endwith %}
+{% extends "dashboard/base.html" %}
+
 {% load static %}
 {% load bootstrap5 %}
+{% load bootstrap_icons %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
 
+{% block content %}
+
 <h3>Edit camera</h3>
 <h4>{{ camera.label|title }}</h4>
 
-<form action="/settings/camera/{{ id }}/" method="post">
+<form action="{% url 'cameraSettingView' profile.id camera.id %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
 	{% buttons %}
-    <input type="submit" value="Submit">
+        <input type="submit" value="Submit">
 	{% endbuttons %}
 </form>
 
-{% include "dashboard/footer.html" %}
+{% endblock content %}
+

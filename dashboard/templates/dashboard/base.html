@@ -1,0 +1,66 @@
+{% load static %}
+{% load bootstrap5 %}
+{% load bootstrap_icons %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Dashboard</title>
+		<link rel="stylesheet" href="{% static 'css/main.css' %}">
+		<link rel="stylesheet" href="{% static 'css/profile-picture.css' %}">
+		<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+	</head>
+	<body>
+		<div id="header d-flex">
+			<div id="verticalMenu" class="container-lg d-flex justify-content-center">
+
+				{% if profile %}
+					<a href="{% url 'profile' profile.id %}" class="p-4 text-decoration-none">
+						<img id="profilePicture" src="/media/{{ profile.image }}" />
+					</a>
+				{% else %}
+					<img class="p-4" id="profilePicture" src="" />
+				{% endif %}
+
+				<a href="{% url 'selectProfile'%}" class="btn btn-primary verticalMenuItem p-3">
+					{% bs_icon 'people' size='2em' %}<br />Profiles
+				</a>
+
+				{% if profile %}
+					<a href="{% url 'multiCameraView' profile.id %}" class="btn btn-primary verticalMenuItem p-3">
+						{% bs_icon 'camera-video' size='2em' %}<br />Cameras
+					</a>
+					<a href="{% url 'map' profile.id %}" class="btn btn-primary verticalMenuItem p-3">
+						{% bs_icon 'map' size='2em' %}<br />Map
+					</a>
+					<a href="{% url 'locationList' profile.id %}" class="btn btn-primary verticalMenuItem" class="p-3">
+						{% bs_icon 'signpost-2' size='2em' %}<br />Locations
+					</a>
+				{% else %}
+					<a href="#" class="btn btn-primary verticalMenuItem disabled" class="p-3">
+						{% bs_icon 'camera-video' size='2em' %}<br />Cameras
+					</a>
+					<a href="#" class="btn btn-primary verticalMenuItem disabled" class="p-3">
+						{% bs_icon 'map' size='2em' %}<br />Map
+					</a>
+					<a href="#" class="btn btn-primary verticalMenuItem disabled" class="p-3">
+						{% bs_icon 'signpost-2' size='2em' %}<br />Locations
+					</a>
+				{% endif %}
+			</div>
+		</div>
+		<div id="contentWrapper" class="container-lg">
+
+			{% block content %}
+			{% endblock content %}
+
+		</div>
+		<div id="footer">
+			footfoot
+		</div>
+	</body>
+</html>

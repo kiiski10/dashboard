@@ -7,6 +7,8 @@ from .forms import ProfileForm, LocationForm, CameraForm
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse # for LiveView
 from django.forms.models import model_to_dict
+from django.urls import reverse
+
 
 import cv2
 from .utilities import camera
@@ -49,8 +51,8 @@ def getGPSLocation():
     print("GOT LOCATION:", lat, lon)
     return({"lat": lat.ljust(8, "0"), "lon": lon.ljust(8, "0")})
 
-def editProfile(request, id):
-    profile = Profile.objects.get(pk=id)
+def editProfile(request, profile_id):
+    profile = Profile.objects.get(pk=profile_id)
     if request.method == 'POST':
         form = ProfileForm(
             request.POST,
@@ -59,7 +61,7 @@ def editProfile(request, id):
         )
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/p/" + id + "/")
+            return HttpResponseRedirect(reverse("profile", args=[profile_id]))
     else:
         form = ProfileForm(model_to_dict(profile))
 
@@ -75,11 +77,7 @@ def editProfile(request, id):
 def index(request):
     return HttpResponseRedirect("/sp/")
 
-def externalMap(request, loc):
-    loc = loc.split(",")
-    zoom = loc[0]
-    lat = loc[1]
-    lon = loc[2]
+def externalMap(request, zoom, lat, lon):
     mapProvider = "https://openstreetmap.org/"
     mapURL = "{0}directions?from={2},{3}&to=#map={1}/{2}/{3}".format(
         mapProvider,
@@ -97,8 +95,8 @@ def selectProfile(request):
     }
     return render(request, "dashboard/select-profile.html", context)
 
-def profile(request, id):
-    profile = Profile.objects.get(pk=id)
+def profile(request, profile_id):
+    profile = Profile.objects.get(pk=profile_id)
     waypoints = profile.location_set.all()
     cameras = profile.cameras.all()
 
@@ -121,23 +119,26 @@ def gpx(request, id):
     }
     return render(request, "dashboard/gpx.html", context)
 
-def map(request):
+def map(request, profile_id):
+    profile = Profile.objects.get(pk=profile_id)
     context = {
         "mapboxAccessToken": mapboxAccessToken,
         "user": request.user,
         "location": getGPSLocation(),
+        "profile": profile,
     }
     return render(request, "dashboard/map.html", context)
 
 @gzip.gzip_page
-def cameraStream(request, id):
+def cameraStream(request, id, profile_id):
     try:
         return StreamingHttpResponse(cameras[id].frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
     except Exception as e:
         print("CANT START CAMERA '{}'".format(id))
         return HttpResponse("Ei voittoa")
 
-def multiCameraView(request):
+def multiCameraView(request, profile_id):
+    profile = Profile.objects.get(pk=profile_id)
     availableCameras = Camera.objects.all()
     if not availableCameras:
         availableCameras = []
@@ -145,24 +146,34 @@ def multiCameraView(request):
     context = {
         "user": request.user,
         "location": getGPSLocation(),
-        "cameras": availableCameras
+        "cameras": availableCameras,
+        "profile": profile,
     }
     return render(request, "dashboard/cameras.html", context)
 
-def cameraSettings(request, id):
-    camera = Camera.objects.get(pk=id)
+def cameraSettings(request, profile_id, camera_id):
+    camera = Camera.objects.get(pk=camera_id)
+    profile = Profile.objects.get(pk=profile_id)
 
     if request.method == 'POST':
         form = CameraForm(request.POST, instance=camera)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/cameras/")
+            return HttpResponseRedirect(reverse("multiCameraView", args=[profile_id]))
     else:
         form = CameraForm(model_to_dict(camera))
 
     context = {
-        "id": id,
+        "id": camera_id,
         "form": form,
         "camera": camera,
+        "profile": profile,
     }
     return render(request, "dashboard/camera-settings.html", context)
+
+def locationList(request, profile_id):
+    profile = Profile.objects.get(pk=profile_id)
+    context = {
+        "profile": profile,
+    }
+    return render(request, "dashboard/location-list.html", context)

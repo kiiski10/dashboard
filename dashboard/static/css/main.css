@@ -1,57 +1,27 @@
-#mainWrap {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  width: 80%;
+#contentWrapper {
   overflow: hidden;
+  min-height:75vh;
 }
 
 #header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  padding: 10px;
-  background-color: rgb(100,200,30);
+  margin-top: 5px;
+  margin-bottom: 2vh;
 }
 
 #footer {
-  margin-top: 5px;
-  width: 100%;
   height: 60px;
-  left: 0px;
-  bottom: 0px;
-  background-color: rgb(30,200,100);
+  background-color: rgb(146, 152, 133);
+  margin-top: 20px;
 }
 
 #cameraViewFrame {
   width: 533px;
   height: 300px;
   margin: auto;
-  background-color: rgb(130,200,130);
+  background-color: rgb(146, 152, 133);
 }
 
 #mapid {
-  margin-top: 100px;
-  position: static;
   height: 480px;
-  width: 100%;
-}
-
-#verticalMenu {
-  z-index: 9999;
-  position: fixed;
-  right: 0px;
-  width: 200px;
-  background-color: rgb(147, 200, 209);
-}
-
-.verticalMenuItem {
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.verticalMenuItem:hover {
-  background-color: white;
+  min-height:90vh;
 }
