@@ -59,27 +59,4 @@
 	</tbody>
 </table>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>{% bs_icon 'geo-alt' %}</th>
-			<th>Note</th>
-			<th>Type</th>
-			<th>Location</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for marker in waypoints %}
-			<tr>
-				<th>
-					{{ marker.label }}
-				</th>
-				<td>{{ marker.note }}</td>
-				<td>{{ marker.location_type }}</td>
-				<td>{{ marker.prettyCoords }}</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-</table>
-
 {% endblock content %}

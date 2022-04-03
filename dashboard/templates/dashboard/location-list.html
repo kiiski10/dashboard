@@ -19,20 +19,29 @@
 			<th>{% bs_icon 'geo-alt' %}</th>
 			<th>Note</th>
 			<th>Type</th>
-			<th>Location</th>
+			<th>Tools</th>
 		</tr>
 	</thead>
 	<tbody>
-		{% for marker in waypoints %}
-			<tr>
-				<th>
-					{{ marker.label }}
-				</th>
-				<td>{{ marker.note }}</td>
-				<td>{{ marker.location_type }}</td>
-				<td>{{ marker.prettyCoords }}</td>
-			</tr>
-		{% endfor %}
+			{% for location in profile.location_set.all %}
+				<tr>
+					<th>
+						{{ location.label }}
+					</th>
+					<td>{{ location.note }}</td>
+					<td>{{ location.location_type }}</td>
+					<td>
+						<div class="d-flex text-decoration-none justify-content-around">
+							<a class="p-3" href="{% url 'externalMap' 11 location.lat location.lon location.lat location.lon %}" target="_blank">
+								{% bs_icon 'map' size='1.5em' %}
+							</a>
+							<a class="p-3" href="{% url 'editLocation' profile.id location.id %}">
+								{% bs_icon 'pen' size='1.5em' %}
+							</a>
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
 	</tbody>
 </table>
 

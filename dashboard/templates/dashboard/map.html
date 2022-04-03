@@ -22,12 +22,12 @@
 		{% bs_icon 'arrow-clockwise' size='2em' %}
 	</a>
 
-	<a href="" class="btn btn-primary">
+	<a href="{% url 'addLocation' profile.id location.lat location.lon %}" class="btn btn-primary">
 		{% bs_icon 'geo-alt' size='2em' %}
 	</a>
 
 	<a
-		href="{% url 'externalMap' 11 location.lat location.lon %}"
+		href="{% url 'externalMap' 11 location.lat location.lon location.lat location.lon %}"
 		target="_blank"
 		class="btn btn-primary"
 	>
@@ -69,6 +69,16 @@
 			fillOpacity: 0.25,
 			radius: 500
 	}).addTo(mymap);
+
+	{% for location in profile.location_set.all %}
+		var circle = L.marker(
+			[
+				{{ location.lat }},
+				{{ location.lon }}
+			]
+		).addTo(mymap);
+
+	{% endfor %}
 
 </script>
 
