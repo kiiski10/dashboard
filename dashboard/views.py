@@ -55,7 +55,8 @@ def getGPSLocation():
 
 
 def editProfile(request):
-	profile = Profile.objects.get(pk=profile_id)
+	profileId = request.session.get("selectedProfile", None)
+	profile = Profile.objects.get(pk=profileId)
 	if request.method == 'POST':
 		form = ProfileForm(
 			request.POST,
@@ -117,9 +118,12 @@ def externalMap(request, zoom, flat, flon, tlat, tlon):
 
 def selectProfile(request):
 	profiles = Profile.objects.all()
-	form = SelectProfileForm
+	profileId = request.session.get("selectedProfile", None)
+	profile = Profile.objects.filter(pk=profileId).first()
+	form = SelectProfileForm(initial={'profile': profileId})
 
 	context = {
+		"profile": profile,
 		"form": form,
 	}
 	return render(request, "dashboard/select-profile.html", context)
