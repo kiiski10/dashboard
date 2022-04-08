@@ -12,7 +12,7 @@
 <h3>Edit location marker</h3>
 <h4>{{ location.label|title }}</h4>
 
-<form action="{% url 'editLocation' profile.id location.id %}" method="post">
+<form action="{% url 'editLocation' location.id %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
 	{% buttons %}

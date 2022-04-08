@@ -19,7 +19,7 @@
 			<div id="verticalMenu" class="container-lg d-flex justify-content-center">
 
 				{% if profile %}
-					<a href="{% url 'profile' profile.id %}" class="p-4 text-decoration-none">
+					<a href="{% url 'profile' %}" class="p-4 text-decoration-none">
 						<img id="profilePicture" src="/media/{{ profile.image }}" />
 					</a>
 				{% else %}
@@ -31,13 +31,13 @@
 				</a>
 
 				{% if profile %}
-					<a href="{% url 'multiCameraView' profile.id %}" class="btn btn-primary verticalMenuItem p-3">
+					<a href="{% url 'multiCameraView' %}" class="btn btn-primary verticalMenuItem p-3">
 						{% bs_icon 'camera-video' size='2em' %}<br />Cameras
 					</a>
-					<a href="{% url 'map' profile.id %}" class="btn btn-primary verticalMenuItem p-3">
+					<a href="{% url 'map' %}" class="btn btn-primary verticalMenuItem p-3">
 						{% bs_icon 'map' size='2em' %}<br />Map
 					</a>
-					<a href="{% url 'locationList' profile.id %}" class="btn btn-primary verticalMenuItem" class="p-3">
+					<a href="{% url 'locationList' %}" class="btn btn-primary verticalMenuItem" class="p-3">
 						{% bs_icon 'signpost-2' size='2em' %}<br />Locations
 					</a>
 				{% else %}

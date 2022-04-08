@@ -11,8 +11,13 @@ class CameraForm(forms.ModelForm):
         model = Camera
         fields = "__all__"
 
+
 class LocationForm(forms.ModelForm):
     class Meta:
         model = Location
         fields = "__all__"
         exclude = ["creator"]
+
+
+class SelectProfileForm(forms.Form):
+    profile = forms.ModelChoiceField(queryset=Profile.objects.all())

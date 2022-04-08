@@ -2,15 +2,16 @@ from django.urls import path, include
 from . import views
 
 profile_patterns = [
-    path("<str:profile_id>/", views.profile, name="profile"),
-    path("<str:profile_id>/e/", views.editProfile, name="editProfile"),
-    path("<str:profile_id>/map/", views.map, name="map"),
-    path("<str:profile_id>/locations/", views.locationList, name="locationList"),
-    path("<str:profile_id>/edit-location/<int:location_id>", views.editLocation, name="editLocation"),
-    path("<str:profile_id>/add-location/<str:lat>/<str:lon>/", views.addLocation, name="addLocation"),
-    path("<str:profile_id>/cameras/", views.multiCameraView, name="multiCameraView"),
-    path("<str:profile_id>/camera/<int:id>/", views.cameraStream, name="cameraStream"),
-    path("<str:profile_id>/settings/camera/<int:camera_id>/", views.cameraSettings, name="cameraSettingView"),
+    path("", views.profile, name="profile"),
+    path("e/", views.editProfile, name="editProfile"),
+    path("map/", views.map, name="map"),
+    path("locations/", views.locationList, name="locationList"),
+    path("unset/", views.unsetProfile, name="unsetProfile"),
+    path("edit-location/<int:location_id>", views.editLocation, name="editLocation"),
+    path("add-location/<str:lat>/<str:lon>/", views.addLocation, name="addLocation"),
+    path("cameras/", views.multiCameraView, name="multiCameraView"),
+    path("camera/<int:id>/", views.cameraStream, name="cameraStream"),
+    path("settings/camera/<int:camera_id>/", views.cameraSettings, name="cameraSettingView"),
 ]
 
 urlpatterns = [

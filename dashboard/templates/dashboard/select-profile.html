@@ -14,21 +14,13 @@
 	Select profile
 </h3>
 
-{% if profiles %}
-  <ul>
-	  {% for profile in profiles %}
-	  <li>
-			<img id="profilePicture" src="/media/{{ profile.image }}" />
-			<a href="{% url 'profile' profile.id %}">{{ profile.name }}</a>
-		</li>
-		{% endfor %}
-  </ul>
-{% else %}
-    <p>
-      No profiles available.<br />
-      Create new profile in admin view
-    </p>
-{% endif %}
+<form class="form" action="{% url 'profile' %}" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+	{% buttons %}
+        <input type="submit" value="Submit">
+	{% endbuttons %}
+</form>
 
 </div>
 

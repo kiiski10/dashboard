@@ -12,7 +12,7 @@
 <h3>Edit camera</h3>
 <h4>{{ camera.label|title }}</h4>
 
-<form action="{% url 'cameraSettingView' profile.id camera.id %}" method="post">
+<form action="{% url 'cameraSettingView' camera.id %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
 	{% buttons %}

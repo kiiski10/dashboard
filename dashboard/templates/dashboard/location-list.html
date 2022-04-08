@@ -35,7 +35,7 @@
 							<a class="p-3" href="{% url 'externalMap' 11 location.lat location.lon location.lat location.lon %}" target="_blank">
 								{% bs_icon 'map' size='1.5em' %}
 							</a>
-							<a class="p-3" href="{% url 'editLocation' profile.id location.id %}">
+							<a class="p-3" href="{% url 'editLocation' location.id %}">
 								{% bs_icon 'pen' size='1.5em' %}
 							</a>
 						</div>

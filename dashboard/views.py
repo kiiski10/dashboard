@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from .models import Profile, Location, Camera
-from .forms import ProfileForm, LocationForm, CameraForm
+from .forms import ProfileForm, LocationForm, CameraForm, SelectProfileForm
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse # for LiveView
 from django.forms.models import model_to_dict
@@ -13,6 +13,7 @@ import cv2
 from .utilities import camera
 import random
 import reverse_geocoder
+
 
 def findWebCams():
 	i = 0
@@ -39,6 +40,7 @@ for cam_id in webcams:
 
 mapboxAccessToken = settings.MAPBOX_ACCESS_TOKEN
 
+
 def getGPSLocation():
 	# import gpsd
 	# gpsd.connect()
@@ -51,7 +53,8 @@ def getGPSLocation():
 	print("GOT LOCATION:", lat, lon)
 	return({"lat": lat.ljust(8, "0"), "lon": lon.ljust(8, "0")})
 
-def editProfile(request, profile_id):
+
+def editProfile(request):
 	profile = Profile.objects.get(pk=profile_id)
 	if request.method == 'POST':
 		form = ProfileForm(
@@ -61,7 +64,7 @@ def editProfile(request, profile_id):
 		)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse("profile", args=[profile_id]))
+			return HttpResponseRedirect(reverse("profile"))
 	else:
 		form = ProfileForm(model_to_dict(profile))
 
@@ -74,8 +77,30 @@ def editProfile(request, profile_id):
 		}
 	)
 
+
+def unsetProfile(request):
+	request.session["selectedProfile"] = None
+	return(HttpResponseRedirect(reverse("index")))
+
+
 def index(request):
-	return HttpResponseRedirect("/sp/")
+	profileId = request.session.get("selectedProfile", None)
+
+	if profileId:
+		profile = get_object_or_404(Profile, pk=profileId)
+	else:
+		return(HttpResponseRedirect(reverse("selectProfile")))
+
+	request.session["selectedProfile"] = profileId
+
+	return render(
+		request, 'dashboard/index.html', {
+			"mapboxAccessToken": mapboxAccessToken,
+			"location": getGPSLocation(),
+			"profile": profile,
+		}
+	)
+
 
 def externalMap(request, zoom, flat, flon, tlat, tlon):
 	mapProvider = "https://openstreetmap.org/"
@@ -89,16 +114,27 @@ def externalMap(request, zoom, flat, flon, tlat, tlon):
 	)
 	return HttpResponseRedirect(mapURL)
 
+
 def selectProfile(request):
 	profiles = Profile.objects.all()
+	form = SelectProfileForm
+
 	context = {
-		"profiles": profiles,
-		"location": getGPSLocation()
+		"form": form,
 	}
 	return render(request, "dashboard/select-profile.html", context)
 
-def profile(request, profile_id):
-	profile = Profile.objects.get(pk=profile_id)
+
+def profile(request):
+
+	if request.method == 'POST':
+		profileId = request.POST["profile"]
+		profile = get_object_or_404(Profile, pk=profileId)
+		request.session["selectedProfile"] = profileId
+	else:
+		profileId = request.session.get("selectedProfile", None)
+		profile = get_object_or_404(Profile, pk=profileId)
+
 	waypoints = profile.location_set.all()
 	cameras = profile.cameras.all()
 
@@ -109,6 +145,7 @@ def profile(request, profile_id):
 		"cameras": cameras,
 	}
 	return render(request, "dashboard/profile.html", context)
+
 
 def image(request, name):
 	file = "{}/img/{}".format(settings.MEDIA_ROOT, name)
@@ -121,8 +158,11 @@ def gpx(request, id):
 	}
 	return render(request, "dashboard/gpx.html", context)
 
-def map(request, profile_id):
-	profile = Profile.objects.get(pk=profile_id)
+
+def map(request):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
+
 	context = {
 		"mapboxAccessToken": mapboxAccessToken,
 		"user": request.user,
@@ -131,16 +171,20 @@ def map(request, profile_id):
 	}
 	return render(request, "dashboard/map.html", context)
 
+
 @gzip.gzip_page
-def cameraStream(request, id, profile_id):
+def cameraStream(request, id):
 	try:
 		return StreamingHttpResponse(cameras[id].frame_gen(), content_type="multipart/x-mixed-replace;boundary=frame")
 	except Exception as e:
 		print("CANT START CAMERA '{}'".format(id))
 		return HttpResponse("Ei voittoa")
 
-def multiCameraView(request, profile_id):
-	profile = Profile.objects.get(pk=profile_id)
+
+def multiCameraView(request):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
+
 	availableCameras = Camera.objects.all()
 	if not availableCameras:
 		availableCameras = []
@@ -153,15 +197,17 @@ def multiCameraView(request, profile_id):
 	}
 	return render(request, "dashboard/cameras.html", context)
 
-def cameraSettings(request, profile_id, camera_id):
+
+def cameraSettings(request, camera_id):
 	camera = Camera.objects.get(pk=camera_id)
-	profile = Profile.objects.get(pk=profile_id)
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
 
 	if request.method == 'POST':
 		form = CameraForm(request.POST, instance=camera)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse("multiCameraView", args=[profile_id]))
+			return HttpResponseRedirect(reverse("multiCameraView"))
 	else:
 		form = CameraForm(model_to_dict(camera))
 
@@ -173,15 +219,19 @@ def cameraSettings(request, profile_id, camera_id):
 	}
 	return render(request, "dashboard/camera-settings.html", context)
 
-def locationList(request, profile_id):
-	profile = Profile.objects.get(pk=profile_id)
+
+def locationList(request):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
 	context = {
 		"profile": profile,
 	}
 	return render(request, "dashboard/location-list.html", context)
 
-def addLocation(request, profile_id, lat, lon):
-	profile = Profile.objects.get(pk=profile_id)
+
+def addLocation(request, lat, lon):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
 	coordinates = [lat, lon]
 	geocode_results = reverse_geocoder.search(coordinates)
 	place_name = "{}, {}, {}".format(geocode_results[0]["name"], geocode_results[0]["admin1"], geocode_results[0]["cc"])
@@ -194,17 +244,19 @@ def addLocation(request, profile_id, lat, lon):
 		lat=lat,
 		lon=lon,
 	)
-	return HttpResponseRedirect(reverse("map", args=[profile_id]))
+	return HttpResponseRedirect(reverse("map"))
 
-def editLocation(request, profile_id, location_id):
-	profile = Profile.objects.get(pk=profile_id)
+
+def editLocation(request, location_id):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
 	location = Location.objects.get(pk=location_id)
 
 	if request.method == 'POST':
 		form = LocationForm(request.POST, instance=location)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse("locationList", args=[profile_id]))
+			return HttpResponseRedirect(reverse("locationList"))
 	else:
 		form = LocationForm(instance=location)
 
