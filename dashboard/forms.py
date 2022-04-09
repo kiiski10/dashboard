@@ -1,12 +1,15 @@
 from django import forms
 from .models import Profile, Camera, Location
 
+
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = "__all__"
 
+
 class CameraForm(forms.ModelForm):
+    #camera_id = forms.IntegerField(max_value=100)
     class Meta:
         model = Camera
         fields = "__all__"

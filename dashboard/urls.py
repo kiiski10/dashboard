@@ -5,13 +5,14 @@ profile_patterns = [
     path("", views.profile, name="profile"),
     path("e/", views.editProfile, name="editProfile"),
     path("map/", views.map, name="map"),
+    path("settings/", views.settingsMenuView, name="settingsMenuView"),
     path("locations/", views.locationList, name="locationList"),
     path("unset/", views.unsetProfile, name="unsetProfile"),
     path("edit-location/<int:location_id>", views.editLocation, name="editLocation"),
     path("add-location/<str:lat>/<str:lon>/", views.addLocation, name="addLocation"),
     path("cameras/", views.multiCameraView, name="multiCameraView"),
     path("camera/<int:id>/", views.cameraStream, name="cameraStream"),
-    path("settings/camera/<int:camera_id>/", views.cameraSettings, name="cameraSettingView"),
+    path("camera/settings/<int:camera_id>/", views.cameraSettingView, name="cameraSettingView"),
 ]
 
 urlpatterns = [

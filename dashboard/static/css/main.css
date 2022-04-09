@@ -14,10 +14,9 @@
   margin-top: 20px;
 }
 
-#cameraViewFrame {
-  width: 533px;
-  height: 300px;
-  margin: auto;
+.cameraViewFrame {
+	object-fit: cover;
+  padding: 5px;
   background-color: rgb(146, 152, 133);
 }
 

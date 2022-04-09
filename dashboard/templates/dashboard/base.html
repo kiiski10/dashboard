@@ -31,23 +31,23 @@
 				</a>
 
 				{% if profile %}
-					<a href="{% url 'multiCameraView' %}" class="btn btn-primary verticalMenuItem p-3">
-						{% bs_icon 'camera-video' size='2em' %}<br />Cameras
+					<a href="{% url 'settingsMenuView' %}" class="btn btn-primary verticalMenuItem p-3">
+						{% bs_icon 'gear' size='2em' %}<br />Settings
 					</a>
 					<a href="{% url 'map' %}" class="btn btn-primary verticalMenuItem p-3">
 						{% bs_icon 'map' size='2em' %}<br />Map
 					</a>
-					<a href="{% url 'locationList' %}" class="btn btn-primary verticalMenuItem" class="p-3">
+					<a href="{% url 'locationList' %}" class="btn btn-primary verticalMenuItem p-3">
 						{% bs_icon 'signpost-2' size='2em' %}<br />Locations
 					</a>
 				{% else %}
-					<a href="#" class="btn btn-primary verticalMenuItem disabled" class="p-3">
-						{% bs_icon 'camera-video' size='2em' %}<br />Cameras
+					<a href="#" class="btn btn-primary verticalMenuItem disabled p-3">
+						{% bs_icon 'gear' size='2em' %}<br />Settings
 					</a>
-					<a href="#" class="btn btn-primary verticalMenuItem disabled" class="p-3">
+					<a href="#" class="btn btn-primary verticalMenuItem disabled p-3">
 						{% bs_icon 'map' size='2em' %}<br />Map
 					</a>
-					<a href="#" class="btn btn-primary verticalMenuItem disabled" class="p-3">
+					<a href="#" class="btn btn-primary verticalMenuItem disabled p-3">
 						{% bs_icon 'signpost-2' size='2em' %}<br />Locations
 					</a>
 				{% endif %}

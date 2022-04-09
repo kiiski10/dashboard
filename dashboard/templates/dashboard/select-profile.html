@@ -8,19 +8,19 @@
 {% bootstrap_messages %}
 
 {% block content %}
-<div class="container-lg d-flex justify-content-center">
 
 <h3>
 	Select profile
 </h3>
+<div class="container-lg d-flex justify-content-center">
 
-<form class="form" action="{% url 'profile' %}" method="post">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-	{% buttons %}
-        <input type="submit" value="Submit">
-	{% endbuttons %}
-</form>
+	<form class="form" action="{% url 'profile' %}" method="post">
+		{% csrf_token %}
+		{% bootstrap_form form %}
+		{% buttons %}
+			<input type="submit" value="Save" class="btn btn-primary">
+		{% endbuttons %}
+	</form>
 
 </div>
 

@@ -9,54 +9,6 @@
 
 {% block content %}
 
-
-<h3>
-	{{ profile.name|title }} <a href="{% url 'editProfile' %}">{% bs_icon 'gear' %}</a>
-</h3>
-
-
-
-<table class="table">
-	<thead>
-		<tr>
-			<th>{% bs_icon 'camera-video' %}</th>
-			<th>Direction</th>
-			<th>Note</th>
-			<th>Status</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for camera in cameras %}
-			<tr>
-				<th>
-					{{ camera.label }}
-				</th>
-				<td>
-					{% if camera.direction == "LEFT" %}
-						{% bs_icon 'arrow-left-square' %}
-					{% endif %}
-					{% if camera.direction == "RIGHT" %}
-						{% bs_icon 'arrow-right-square' %}
-					{% endif %}
-					{% if camera.direction == "FORWARD" %}
-						{% bs_icon 'arrow-up-square' %}
-					{% endif %}
-					{% if camera.direction == "BACK" %}
-						{% bs_icon 'arrow-down-square' %}
-					{% endif %}
-				</td>
-				<td>{{ camera.note }}</td>
-				<td>
-					{% if camera.active %}
-						{% bs_icon 'camera-video' size='1.5em' color="green" %}
-					{% else %}
-						{% bs_icon 'camera-video-off' size='1.5em' color="grey" %}
-					{% endif %}
-				</td>
-
-			</tr>
-		{% endfor %}
-	</tbody>
-</table>
+{% include "dashboard/cameras.html" %}
 
 {% endblock content %}

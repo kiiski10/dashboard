@@ -1,5 +1,3 @@
-{% extends "dashboard/base.html" %}
-
 {% load static %}
 {% load bootstrap5 %}
 {% load bootstrap_icons %}
@@ -12,31 +10,13 @@
 <h3>
 	Cameras
 </h3>
-
- <table class="table">
-	<thead>
-		<th>#</th>
-		<th>Label</th>
-		<th>Settings</th>
-		<th>Image</th>
-	</thead>
-	<tbody>
-		{% for camera in cameras %}
-		<tr>
-			<th>{{ forloop.counter }}
-			</th>
-			<td>{{ camera.label }}</td>
-			<td><a href="{% url 'cameraSettingView' camera.pk %}"}}">{% bs_icon 'gear' size='1.5em' %}</a></td>
-			<td>
-				{% if camera.active %}
-					<iframe id="cameraViewFrame" src="{% url 'cameraStream' camera.device_id %}"></iframe> <br />
-				{% else %}
-					{% bs_icon 'camera-video-off' size='1.5em' color="grey" %}
-				{% endif %}
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-
+<div class="container">
+	{% for camera in cameras %}
+	<div class="col">
+		{% if camera.active %}
+			<img class="cameraViewFrame col-12" src="{% url 'cameraStream' camera.device_id %}">
+		{% endif %}
+	</div>
+	{% endfor %}
+</div>
 {% endblock content %}

@@ -202,21 +202,13 @@ def multiCameraView(request):
 	return render(request, "dashboard/cameras.html", context)
 
 
-def cameraSettings(request, camera_id):
+def cameraSettingView(request, camera_id):
 	camera = Camera.objects.get(pk=camera_id)
 	profileId = request.session.get("selectedProfile", None)
 	profile = get_object_or_404(Profile, pk=profileId)
-
-	if request.method == 'POST':
-		form = CameraForm(request.POST, instance=camera)
-		if form.is_valid():
-			form.save()
-			return HttpResponseRedirect(reverse("multiCameraView"))
-	else:
-		form = CameraForm(model_to_dict(camera))
+	form = CameraForm(model_to_dict(camera))
 
 	context = {
-		"id": camera_id,
 		"form": form,
 		"camera": camera,
 		"profile": profile,
@@ -270,3 +262,19 @@ def editLocation(request, location_id):
 		"form": form,
 	}
 	return render(request, "dashboard/edit-location.html", context)
+
+
+def settingsMenuView(request, kwargs=None):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
+
+	if request.method == 'POST':
+		camera_id = request.POST["camera_id"]
+		camera = profile.cameras.get(pk=camera_id)
+		form = CameraForm(request.POST, instance=camera)
+		form.save()
+
+	context = {
+		"profile": profile,
+	}
+	return render(request, "dashboard/settings-menu.html", context)
