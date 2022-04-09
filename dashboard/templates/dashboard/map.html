@@ -17,6 +17,9 @@
 	crossorigin=""
 >
 
+<link rel="stylesheet" href="/static/css/MarkerCluster.css">
+<link rel="stylesheet" href="/static/css/MarkerCluster.Default.css">
+
 <div id="map_control_bar">
 	<a href="" class="btn btn-primary">
 		{% bs_icon 'arrow-clockwise' size='2em' %}
@@ -32,6 +35,7 @@
 	integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
 	crossorigin="">
 </script>
+<script src="/static/js/leaflet.markercluster.js"></script>
 <script>
 	var mymap = L.map('mapid').setView(
 		[
@@ -50,7 +54,7 @@
 		accessToken: '{{ mapboxAccessToken }}'
 	}).addTo(mymap);
 
-	var circle = L.circle(
+	L.circle(
 		[
 			{{ location.lat }},
 			{{ location.lon }}
@@ -62,6 +66,7 @@
 			radius: 500
 	}).addTo(mymap);
 
+	var markers = new L.MarkerClusterGroup();
 
 	{% for loc in profile.location_set.all %}
 		var popupHtml = "												\
@@ -76,16 +81,18 @@
 				Navigate to												\
 			</a>  														\
 		"
-
-		var circle = L.marker(
-			[
-				{{ loc.lat }},
-				{{ loc.lon }}
-			]
-		).addTo(mymap)
-		.bindPopup(popupHtml);
+		markers.addLayer(
+			L.marker(
+				[
+					{{ loc.lat }},
+					{{ loc.lon }}
+				]
+			).bindPopup(popupHtml)
+		)
 
 	{% endfor %}
+
+	mymap.addLayer(markers);
 
 </script>
 
