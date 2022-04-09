@@ -252,7 +252,7 @@ def editLocation(request, location_id):
 		form = LocationForm(request.POST, instance=location)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse("locationList"))
+			return HttpResponseRedirect(reverse("map"))
 	else:
 		form = LocationForm(instance=location)
 
@@ -278,3 +278,15 @@ def settingsMenuView(request, kwargs=None):
 		"profile": profile,
 	}
 	return render(request, "dashboard/settings-menu.html", context)
+
+
+def deleteLocationView(request, location_id):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
+	location = get_object_or_404(Location, pk=location_id)
+	location.delete()
+	context = {
+		"profile": profile,
+	}
+	return HttpResponseRedirect(reverse("locationList"))
+

@@ -1,6 +1,9 @@
 # This .gitignore file is modified version of:
 # https://djangowaves.com/tips-tricks/gitignore-for-a-django-project/
 
+# bootstrap icon cache #
+cache
+
 # Django #
 *.log
 *.pot

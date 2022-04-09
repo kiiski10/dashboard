@@ -17,7 +17,9 @@
     {% bootstrap_form form %}
     <input type="hidden" value="{{ camera.pk }}" name="camera_id">
 	{% buttons %}
-        <input type="submit" value="Submit">
+    <div class="d-flex justify-content-around">
+        <input class="col-4 btn btn-primary" type="submit" value="Save">
+    </div>
 	{% endbuttons %}
 </form>
 

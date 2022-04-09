@@ -9,6 +9,7 @@ profile_patterns = [
     path("locations/", views.locationList, name="locationList"),
     path("unset/", views.unsetProfile, name="unsetProfile"),
     path("edit-location/<int:location_id>", views.editLocation, name="editLocation"),
+    path("delete-location/<int:location_id>", views.deleteLocationView, name="deleteLocationView"),
     path("add-location/<str:lat>/<str:lon>/", views.addLocation, name="addLocation"),
     path("cameras/", views.multiCameraView, name="multiCameraView"),
     path("camera/<int:id>/", views.cameraStream, name="cameraStream"),
