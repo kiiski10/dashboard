@@ -105,7 +105,7 @@ def index(request):
 
 def externalMap(request, zoom, flat, flon, tlat, tlon):
 	mapProvider = "https://openstreetmap.org/"
-	mapURL = "{0}directions?from={2},{3}&to=#map={1}/{4}/{5}".format(
+	mapURL = "{0}directions?from={4},{5}&to={2},{3}".format(
 		mapProvider,
 		zoom,
 		flat,

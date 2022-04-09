@@ -25,14 +25,6 @@
 	<a href="{% url 'addLocation' location.lat location.lon %}" class="btn btn-primary">
 		{% bs_icon 'geo-alt' size='2em' %}
 	</a>
-
-	<a
-		href="{% url 'externalMap' 11 location.lat location.lon location.lat location.lon %}"
-		target="_blank"
-		class="btn btn-primary"
-	>
-		{% bs_icon 'signpost' size='2em' %}
-	</a>
 </div>
 
 <div id="mapid"></div>
@@ -70,13 +62,28 @@
 			radius: 500
 	}).addTo(mymap);
 
-	{% for location in profile.location_set.all %}
+
+	{% for loc in profile.location_set.all %}
+		var popupHtml = "												\
+			<h4>{{ loc.label }}</h4>									\
+			<a href='{% url 'editLocation' loc.id %}'					\
+				class='btn'												\
+				>Edit													\
+			</a>  														\
+			<a href='{% url 'externalMap' 11 loc.lat loc.lon location.lat location.lon %}' 	\
+				target='_blank'											\
+				class='btn'>											\
+				Navigate to												\
+			</a>  														\
+		"
+
 		var circle = L.marker(
 			[
-				{{ location.lat }},
-				{{ location.lon }}
+				{{ loc.lat }},
+				{{ loc.lon }}
 			]
-		).addTo(mymap);
+		).addTo(mymap)
+		.bindPopup(popupHtml);
 
 	{% endfor %}
 
