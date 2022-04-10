@@ -12,7 +12,7 @@
 <h3>Edit profile</h3>
 <h4>{{ profile.name|title }}</h4>
 
-<form action="{% url 'editProfile' %}" method="post">
+<form action="{% url 'editProfile' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
 	{% buttons %}

@@ -12,13 +12,13 @@
 <h3>Edit location marker</h3>
 <h4>{{ location.label|title }}</h4>
 
-<form action="{% url 'editLocation' location.id %}" method="post">
+<form action="{% url 'editLocation' location.id %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
 	{% buttons %}
     <div class="d-flex justify-content-around">
-        <input class="col-4 btn btn-primary" type="submit" value="Save">
-        <a class="col-4 btn btn-primary" href="{% url 'deleteLocationView' location.id %}">
+        <input class="col-4 btn btn-success" type="submit" value="Save">
+        <a class="col-4 btn btn-danger" href="{% url 'deleteLocationView' location.id %}">
             Delete
         </a>
     </div>

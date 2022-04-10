@@ -17,22 +17,22 @@
 	<thead>
 		<tr>
 			<th>{% bs_icon 'geo-alt' %}</th>
-			<th>Note</th>
+			<th>Date</th>
 			<th>Type</th>
 			<th>Tools</th>
 		</tr>
 	</thead>
 	<tbody>
-			{% for location in profile.location_set.all %}
+			{% for location in locations %}
 				<tr>
 					<th>
 						{{ location.label }}
 					</th>
-					<td>{{ location.note }}</td>
+					<td>{{ location.created_date | date:"j.n.Y" }}</td>
 					<td>{{ location.location_type }}</td>
 					<td>
 						<div class="d-flex text-decoration-none justify-content-around">
-							<a class="p-3" href="{% url 'externalMap' 11 location.lat location.lon location.lat location.lon %}" target="_blank">
+							<a class="p-3" href="{% url 'map' %}?lat={{ location.lat }}&lon={{ location.lon }}">
 								{% bs_icon 'map' size='1.5em' %}
 							</a>
 							<a class="p-3" href="{% url 'editLocation' location.id %}">

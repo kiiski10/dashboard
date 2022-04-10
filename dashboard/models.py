@@ -22,9 +22,12 @@ class Location(models.Model):
         on_delete=models.CASCADE,
         null=True,
     )
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
     label = models.CharField(max_length=200)
     note = models.CharField(max_length=200, blank=True)
     location_type = models.CharField(max_length=200, choices=LOCATION_TYPE_CHOICES, default="WAYPOINT")
+    image = models.ImageField(blank=True, upload_to='img/')
     lat = models.DecimalField(max_digits=9, decimal_places=6)
     lon = models.DecimalField(max_digits=9, decimal_places=6)
 

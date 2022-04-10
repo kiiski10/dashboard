@@ -166,11 +166,18 @@ def gpx(request, id):
 def map(request):
 	profileId = request.session.get("selectedProfile", None)
 	profile = get_object_or_404(Profile, pk=profileId)
+	lat = request.GET.get("lat", None)
+	lon = request.GET.get("lon", None)
+
+	if not lat or not lon:
+		location = getGPSLocation()
+	else:
+		location = {"lat": lat, "lon": lon}
 
 	context = {
 		"mapboxAccessToken": mapboxAccessToken,
 		"user": request.user,
-		"location": getGPSLocation(),
+		"location": location,
 		"profile": profile,
 	}
 	return render(request, "dashboard/map.html", context)
@@ -195,7 +202,6 @@ def multiCameraView(request):
 
 	context = {
 		"user": request.user,
-		"location": getGPSLocation(),
 		"cameras": availableCameras,
 		"profile": profile,
 	}
@@ -219,8 +225,10 @@ def cameraSettingView(request, camera_id):
 def locationList(request):
 	profileId = request.session.get("selectedProfile", None)
 	profile = get_object_or_404(Profile, pk=profileId)
+	locations = profile.location_set.order_by("-created_date")
 	context = {
 		"profile": profile,
+		"locations": locations,
 	}
 	return render(request, "dashboard/location-list.html", context)
 
@@ -240,7 +248,9 @@ def addLocation(request, lat, lon):
 		lat=lat,
 		lon=lon,
 	)
-	return HttpResponseRedirect(reverse("map"))
+
+	getParams = "?lat={}&lon={}".format(lat, lon)
+	return HttpResponseRedirect("/p/map/{}".format(getParams))
 
 
 def editLocation(request, location_id):
@@ -249,10 +259,15 @@ def editLocation(request, location_id):
 	location = Location.objects.get(pk=location_id)
 
 	if request.method == 'POST':
-		form = LocationForm(request.POST, instance=location)
+		form = LocationForm(
+			request.POST,
+			request.FILES,
+			instance=location
+		)
 		if form.is_valid():
 			form.save()
-			return HttpResponseRedirect(reverse("map"))
+			getParams = "?lat={}&lon={}".format(location.lat, location.lon)
+			return HttpResponseRedirect("/p/map/{}".format(getParams))
 	else:
 		form = LocationForm(instance=location)
 
@@ -288,5 +303,18 @@ def deleteLocationView(request, location_id):
 	context = {
 		"profile": profile,
 	}
-	return HttpResponseRedirect(reverse("locationList"))
+	getParams = "?lat={}&lon={}".format(location.lat, location.lon)
+	return HttpResponseRedirect("/p/map/{}".format(getParams))
 
+
+def setAsMyLocation(request, lat, lon):
+	profileId = request.session.get("selectedProfile", None)
+	profile = get_object_or_404(Profile, pk=profileId)
+
+	context = {
+		"profile": profile,
+		"location": { "lat": lat, "lon": lon },
+		"mapboxAccessToken": mapboxAccessToken,
+	}
+
+	return render(request, "dashboard/map.html", context)

@@ -20,12 +20,12 @@
 <link rel="stylesheet" href="/static/css/MarkerCluster.css">
 <link rel="stylesheet" href="/static/css/MarkerCluster.Default.css">
 
-<div id="map_control_bar">
-	<a href="" class="btn btn-primary">
+<div id="map_control_bar d-flex">
+	<a href="{% url 'map' %}" class="btn btn-primary p-4">
 		{% bs_icon 'arrow-clockwise' size='2em' %}
 	</a>
 
-	<a href="{% url 'addLocation' location.lat location.lon %}" class="btn btn-primary">
+	<a href="{% url 'addLocation' location.lat location.lon %}" class="btn btn-primary p-4">
 		{% bs_icon 'geo-alt' size='2em' %}
 	</a>
 </div>
@@ -39,8 +39,13 @@
 <script>
 	var mymap = L.map('mapid').setView(
 		[
-			{{ location.lat }},
-			{{ location.lon }}
+			{% if center_to %}
+				{{ center_to.lat }},
+				{{ center_to.lon }}
+			{% else %}
+				{{ location.lat }},
+				{{ location.lon }}
+			{% endif %}
 		],
 		10
 	);
@@ -69,17 +74,24 @@
 	var markers = new L.MarkerClusterGroup();
 
 	{% for loc in profile.location_set.all %}
-		var popupHtml = "												\
-			<h4>{{ loc.label }}</h4>									\
-			<a href='{% url 'editLocation' loc.id %}'					\
-				class='btn'												\
-				>Edit													\
-			</a>  														\
+		var popupHtml = "													\
+			<h4>{{ loc.label }}</h4>										\
+			{% if loc.image %}												\
+				<img class='col-12' src='/media/{{ loc.image }}'>			\
+			{% endif %}														\
+			<a href='{% url 'editLocation' loc.id %}'						\
+				class='btn text-decoration-none col'						\
+				>Edit														\
+			</a>  															\
 			<a href='{% url 'externalMap' 11 loc.lat loc.lon location.lat location.lon %}' 	\
-				target='_blank'											\
-				class='btn'>											\
-				Navigate to												\
-			</a>  														\
+				target='_blank'												\
+				class='btn text-decoration-none col'>						\
+				Directions to												\
+			</a>  															\
+			<a href='{% url 'map' %}?lat={{ loc.lat }}&lon={{ loc.lon }}'	\
+				class='btn text-decoration-none col'>						\
+				Set as my position											\
+			</a>  															\
 		"
 		markers.addLayer(
 			L.marker(
